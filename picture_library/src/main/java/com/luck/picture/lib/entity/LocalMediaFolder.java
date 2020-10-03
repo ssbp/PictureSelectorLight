@@ -20,7 +20,7 @@ public class LocalMediaFolder implements Parcelable {
     private int imageNum;
     private int checkedNum;
     private boolean isChecked;
-    private List<LocalMedia> images = new ArrayList<LocalMedia>();
+    private List<LocalMedia> images = new ArrayList<>();
 
 
     public boolean isChecked() {
@@ -64,9 +64,6 @@ public class LocalMediaFolder implements Parcelable {
     }
 
     public List<LocalMedia> getImages() {
-        if (images == null) {
-            images = new ArrayList<>();
-        }
         return images;
     }
 
@@ -82,6 +79,11 @@ public class LocalMediaFolder implements Parcelable {
         this.checkedNum = checkedNum;
     }
 
+
+    public LocalMediaFolder() {
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -95,10 +97,7 @@ public class LocalMediaFolder implements Parcelable {
         dest.writeInt(this.imageNum);
         dest.writeInt(this.checkedNum);
         dest.writeByte(this.isChecked ? (byte) 1 : (byte) 0);
-        dest.writeTypedList(this.images);
-    }
-
-    public LocalMediaFolder() {
+        dest.writeList(this.images);
     }
 
     protected LocalMediaFolder(Parcel in) {
@@ -108,10 +107,11 @@ public class LocalMediaFolder implements Parcelable {
         this.imageNum = in.readInt();
         this.checkedNum = in.readInt();
         this.isChecked = in.readByte() != 0;
-        this.images = in.createTypedArrayList(LocalMedia.CREATOR);
+        this.images = new ArrayList<>();
+        in.readList(this.images, LocalMedia.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<LocalMediaFolder> CREATOR = new Parcelable.Creator<LocalMediaFolder>() {
+    public static final Creator<LocalMediaFolder> CREATOR = new Creator<LocalMediaFolder>() {
         @Override
         public LocalMediaFolder createFromParcel(Parcel source) {
             return new LocalMediaFolder(source);

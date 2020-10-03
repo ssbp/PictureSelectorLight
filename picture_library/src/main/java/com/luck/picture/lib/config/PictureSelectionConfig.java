@@ -2,7 +2,8 @@ package com.luck.picture.lib.config;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.StyleRes;
+
+import androidx.annotation.StyleRes;
 
 import com.luck.picture.lib.R;
 import com.luck.picture.lib.compress.Luban;
@@ -102,6 +103,9 @@ public final class PictureSelectionConfig implements Parcelable {
         private static final PictureSelectionConfig INSTANCE = new PictureSelectionConfig();
     }
 
+    public PictureSelectionConfig() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -141,9 +145,6 @@ public final class PictureSelectionConfig implements Parcelable {
         dest.writeTypedList(this.selectionMedias);
     }
 
-    public PictureSelectionConfig() {
-    }
-
     protected PictureSelectionConfig(Parcel in) {
         this.mimeType = in.readInt();
         this.camera = in.readByte() != 0;
@@ -177,7 +178,7 @@ public final class PictureSelectionConfig implements Parcelable {
         this.selectionMedias = in.createTypedArrayList(LocalMedia.CREATOR);
     }
 
-    public static final Parcelable.Creator<PictureSelectionConfig> CREATOR = new Parcelable.Creator<PictureSelectionConfig>() {
+    public static final Creator<PictureSelectionConfig> CREATOR = new Creator<PictureSelectionConfig>() {
         @Override
         public PictureSelectionConfig createFromParcel(Parcel source) {
             return new PictureSelectionConfig(source);
