@@ -19,6 +19,39 @@ android {
     }
 }
 
+
+// 打包发布到github
+apply plugin: 'maven'
+ext {
+    // 从Github上clone下来的项目的本地地址
+    GITHUB_REPO_PATH = "C:\\Users\\ChangSir\\Desktop\\PictureSelectorLight"
+    // compile 'com.audienl:super_library:1.0.0'
+    PUBLISH_GROUP_ID = 'com.changsir'
+    PUBLISH_ARTIFACT_ID = 'PictureSelectorLight'
+    PUBLISH_VERSION = '2.1.1'
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        def deployPath = file(project.GITHUB_REPO_PATH)
+        repository(url: "file://${deployPath.absolutePath}")
+        pom.project {
+            groupId project.PUBLISH_GROUP_ID
+            artifactId project.PUBLISH_ARTIFACT_ID
+            version project.PUBLISH_VERSION
+        }
+    }
+}
+
+// 源代码一起打包(不需要打包源代码的不要添加这几行)
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.sourceFiles
+}
+artifacts {
+    archives androidSourcesJar
+}
+
 dependencies {
     compile 'androidx.appcompat:appcompat:1.0.0'
     compile 'androidx.recyclerview:recyclerview:1.0.0'
