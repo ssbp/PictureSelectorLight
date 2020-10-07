@@ -27,6 +27,8 @@ public class LocalMedia implements Parcelable {
     private int height;
     private boolean netsource;
 
+    private String object;
+
     public LocalMedia() {
 
     }
@@ -55,6 +57,14 @@ public class LocalMedia implements Parcelable {
         this.position = position;
         this.num = num;
         this.mimeType = mimeType;
+    }
+
+    public String getObject() {
+        return object;
+    }
+
+    public void setObject(String object) {
+        this.object = object;
     }
 
     public boolean isNetsource() {
@@ -175,6 +185,7 @@ public class LocalMedia implements Parcelable {
         dest.writeInt(this.width);
         dest.writeInt(this.height);
         dest.writeByte(this.netsource ? (byte) 1 : (byte) 0);
+        dest.writeString(this.object);
     }
 
     protected LocalMedia(Parcel in) {
@@ -190,6 +201,7 @@ public class LocalMedia implements Parcelable {
         this.width = in.readInt();
         this.height = in.readInt();
         this.netsource = in.readByte() != 0;
+        this.object = in.readString();
     }
 
     public static final Creator<LocalMedia> CREATOR = new Creator<LocalMedia>() {
